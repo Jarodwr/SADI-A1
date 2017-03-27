@@ -21,9 +21,8 @@ public interface GameEngine
 	 * 3. continue looping until the player busts (default value of
 	 * GameEngine.BUST_TOTAL=21)
 	 * 4. call {@link GameEngineCallback#result(Player, int, GameEngine)} with
-	 * final
-	 * result for player (the pre bust total) 5. update the player with final
-	 * result so it can be retrieved later
+	 * final result for player (the pre bust total) 
+	 * 5. update the player with final result so it can be retrieved later
 	 * 
 	 * @param player
 	 *            the current player who will have their result set at the end
