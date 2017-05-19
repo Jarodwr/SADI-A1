@@ -2,25 +2,23 @@ package model;
 
 import model.interfaces.PlayingCard;
 
-public class BasicCard implements PlayingCard{
+public class PlayingCardImpl implements PlayingCard{
 
 	private Suit suit;
 	private Value value;
 	
-	BasicCard(Suit suit, Value value) {
+	PlayingCardImpl(Suit suit, Value value) {
 		this.suit = suit;
 		this.value = value;
 	}
 	
 	@Override
 	public Suit getSuit() {
-		// TODO Auto-generated method stub
 		return suit;
 	}
 
 	@Override
 	public Value getValue() {
-		// TODO Auto-generated method stub
 		return value;
 	}
 

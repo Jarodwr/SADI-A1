@@ -1,9 +1,6 @@
 package model;
 
-import java.util.ArrayDeque;
-
 import model.interfaces.Player;
-import model.interfaces.PlayingCard;
 
 public class SimplePlayer implements Player{
 	
@@ -53,23 +50,18 @@ public class SimplePlayer implements Player{
 	public boolean placeBet(int bet) {
 		if (bet <= points) {
 			this.bet = bet;
-			this.points -= bet;
 			return true;
 		}
-		else {
-			return false;
-		}
+		return false;
 	}
 
 	@Override
 	public int getBet() {
-
 		return bet;
 	}
 
 	@Override
 	public void resetBet() {
-
 		this.bet = 0;
 	}
 
