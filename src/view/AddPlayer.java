@@ -21,10 +21,9 @@ public class AddPlayer extends JPanel {
 	private JTextField name;
 	private JTextField points;
 	
-	public AddPlayer(GuiClient main) {
+	public AddPlayer(ClientGui main) {
 		
 		setLayout(new BorderLayout(0, 0));
-		
 		
 		JPanel panel = new JPanel();
 		add(panel, BorderLayout.CENTER);
@@ -70,7 +69,7 @@ public class AddPlayer extends JPanel {
 		panel.add(points, gbc_textField_1);
 		points.setColumns(10);
 		
-		JButton btnSubmit = new JButton("Add Player");
+		JButton btnSubmit = new JButton("Start");
 		GridBagConstraints gbc_btnSubmit = new GridBagConstraints();
 		gbc_btnSubmit.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnSubmit.insets = new Insets(0, 0, 5, 0);
@@ -85,33 +84,22 @@ public class AddPlayer extends JPanel {
 					try {
 						Integer.parseInt(points.getText());
 						Player np = main.getController().addPlayer(name.getText(), Integer.parseInt(points.getText()));
-						if (np == null)
+						if (np == null) {
 							JOptionPane.showMessageDialog(main, "Could not add player");
-						else
+						} else {
 							JOptionPane.showMessageDialog(main, "Player successfully added");
 							if (main.getCurrentPlayer() == null) {
 								main.setCurrentPlayer(np);	//if there is no current player, this player is the new current player
+								main.getController().preGame(main.getRound());
+								main.page("place bet");
 							}
-						
+						}
 					} catch(NumberFormatException exception) {
 						JOptionPane.showMessageDialog(main, "points format is incorrect");
 					}
 				} else {
 					JOptionPane.showMessageDialog(main, "Could not add player");
 				}
-			}
-		});
-		
-		JButton btnGoBack = new JButton("go back");
-		GridBagConstraints gbc_btnGoBack = new GridBagConstraints();
-		gbc_btnGoBack.anchor = GridBagConstraints.EAST;
-		gbc_btnGoBack.gridx = 1;
-		gbc_btnGoBack.gridy = 6;
-		panel.add(btnGoBack, gbc_btnGoBack);
-		btnGoBack.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				main.page("start");
 			}
 		});
 	}

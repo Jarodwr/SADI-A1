@@ -20,10 +20,10 @@ import java.awt.GridLayout;
 public class Results extends JPanel {
 
 	private int dealerResult = 0;
-	private GuiClient main;
+	private ClientGui main;
 	private JPanel resultBoard = new JPanel();
 	
-	public Results(GuiClient main) {
+	public Results(ClientGui main) {
 		this.main = main;
 		setLayout(new BorderLayout(0, 0));
 		

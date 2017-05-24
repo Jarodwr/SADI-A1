@@ -17,9 +17,9 @@ import java.awt.event.ActionListener;
 public class PlaceBet extends JPanel {
 	private JTextField textField;
 	private JLabel lblBank = new JLabel();
-	private GuiClient main;
+	private ClientGui main;
 	
-	public PlaceBet(GuiClient m) {
+	public PlaceBet(ClientGui m) {
 		
 		this.main = m;
 		

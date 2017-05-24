@@ -3,8 +3,8 @@ package controller;
 import java.util.Collection;
 
 import model.GameEngineCallbackImpl;
-import model.GameEngineImpl;
 import model.SimplePlayer;
+import model.comms.GameEngineClientStub;
 import model.interfaces.GameEngine;
 import model.interfaces.GameEngineCallback;
 import model.interfaces.Player;
@@ -12,7 +12,7 @@ import view.Round;
 
 public class GameController {
 	
-	final GameEngine gameEngine = new GameEngineImpl();
+	final GameEngine gameEngine = new GameEngineClientStub();
 	
 	/**
 	 * 
@@ -60,11 +60,6 @@ public class GameController {
 		Collection<Player> p = gameEngine.getAllPlayers();
 		Player[] players = new Player[p.size()];
 		p.toArray(players);
-		
-		//Singleplayer stuff
-		GameEngineCallback singlePlayer = new GameEngineCallbackImpl(gameGui);
-
-		gameEngine.addGameEngineCallback(singlePlayer);
 	}
 	
 	/**
@@ -81,7 +76,6 @@ public class GameController {
 				gameEngine.dealHouse(dt);
 			}
 		}).start();
-
 	}
 	
 	/**

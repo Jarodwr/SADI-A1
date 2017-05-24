@@ -64,8 +64,10 @@ public class GameEngineImpl implements GameEngine{
 			
 		} while (result != prevResult);	//Keep drawing cards while the player has not reached the point cap
 		
-		for (GameEngineCallback c : callbacks)
+		for (GameEngineCallback c : callbacks) {
 			c.result(player, result, this);
+			System.out.println(player.getPlayerName());
+		}
 		
 		player.setResult(result);	//update result in player
 	}
@@ -96,8 +98,9 @@ public class GameEngineImpl implements GameEngine{
 
 		} while (result != prevResult);	//keep dealing while not busted
 		
-		for (GameEngineCallback c : callbacks)
+		for (GameEngineCallback c : callbacks) {
 			c.houseResult(result, this);
+		}
 		
 		houseResult = result;
 	}

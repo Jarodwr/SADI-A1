@@ -30,7 +30,7 @@ import java.awt.Font;
 @SuppressWarnings("serial")
 public class Round extends JPanel {
 
-	private GuiClient main;
+	private ClientGui main;
 	
 	private JPanel houseCardSprites = new JPanel();
 	private JPanel yourCardSprites = new JPanel();
@@ -40,7 +40,7 @@ public class Round extends JPanel {
 	private JButton btnResults;
 	private JPanel board = new JPanel();
 	
-	public Round(GuiClient main) {
+	public Round(ClientGui main) {
 		
 		this.main = main;
 		
@@ -71,7 +71,7 @@ public class Round extends JPanel {
 		panel.setLayout(new BorderLayout(0, 0));
 		
 		btnResults = new JButton("Start Game");
-		panel.add(btnResults, BorderLayout.NORTH);
+		panel.add(btnResults, BorderLayout.CENTER);
 		btnResults.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -95,13 +95,6 @@ public class Round extends JPanel {
 				}
 			}
 		});
-		
-		
-		JScrollBar scrollBar = new JScrollBar();
-		panel.add(scrollBar, BorderLayout.EAST);
-		
-		JPanel panel_1 = new JPanel();
-		panel.add(panel_1, BorderLayout.CENTER);
 		
 		add(board, BorderLayout.CENTER);
 		board.setLayout(new BorderLayout(0, 0));

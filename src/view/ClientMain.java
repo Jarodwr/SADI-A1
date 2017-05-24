@@ -1,9 +1,9 @@
 package view;
 
-public class App {
+public class ClientMain {
 	
 	public static void main(String[] args) {
-		GuiClient gui = new GuiClient();
+		ClientGui gui = new ClientGui();
 		gui.setVisible(true);
 	}
 	

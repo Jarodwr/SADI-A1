@@ -15,14 +15,13 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 @SuppressWarnings("serial")
-public class GuiClient extends JFrame {
+public class ClientGui extends JFrame {
 	
 	private GameController c = new GameController();
 	private Player currentPlayer = null;
 	
 	private CardLayout cards = new CardLayout();
 	
-	private Menu start = new Menu(this);
 	private AddPlayer addPlayer = new AddPlayer(this);
 	private PlaceBet placeBet = new PlaceBet(this);
 	private Round round = new Round(this);
@@ -31,12 +30,10 @@ public class GuiClient extends JFrame {
 	private ArrayList<Player> players = new ArrayList<Player>();
 	private int dealerResult = 0;
 	
-	public GuiClient() {
-		
+	public ClientGui() {
 		getContentPane().setLayout(cards);
 		
 		//Add all pages to the cardlayout
-		getContentPane().add(start, "start");
 		getContentPane().add(addPlayer, "add player");
 		getContentPane().add(placeBet, "place bet");
 		getContentPane().add(round, "round");
@@ -76,10 +73,6 @@ public class GuiClient extends JFrame {
 	
 	public void page(String s) {
 		switch(s) {
-		case "start":
-			if (currentPlayer != null)
-				start.canStart(true);
-			break;
 		case "add player":
 			break;
 		case "place bet":
