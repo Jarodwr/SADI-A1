@@ -23,7 +23,6 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
-import javax.swing.JScrollBar;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 

@@ -15,7 +15,7 @@ public class DealOperation extends AbstractGameOperation{
 	
 	@Override
 	public void execute(GameEngine ge) {
-		// TODO Auto-generated method stub
+		ge.dealPlayer(player, delay);
 		
 	}
 

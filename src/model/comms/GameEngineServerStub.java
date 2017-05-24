@@ -18,7 +18,7 @@ public class GameEngineServerStub {
 	
 	public GameEngineServerStub() {
 		try {
-			server = new ServerSocket(0);
+			server = new ServerSocket(50000);
 			socket = server.accept();
 			ois = new ObjectInputStream(socket.getInputStream());
 		} catch(IOException e) {

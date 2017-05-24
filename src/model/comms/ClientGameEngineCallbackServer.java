@@ -5,19 +5,19 @@ import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import model.GameEngineCallbackImpl;
 import model.comms.callback.operations.AbstractCallbackOperation;
 import model.interfaces.GameEngineCallback;
 
 public class ClientGameEngineCallbackServer {
-	private GameEngineCallback gec = new GameEngineCallbackImpl();
+	private GameEngineCallback gec;
 	
 	private ServerSocket server;
 	private Socket socket;
 	private ObjectInputStream ois;
 	private HostDetails host;
 	
-	public ClientGameEngineCallbackServer() {
+	public ClientGameEngineCallbackServer(GameEngineCallback gec) {
+		this.gec = gec;
 		try {
 			server = new ServerSocket(0);
 			host = new HostDetails(server.getInetAddress().getHostAddress(), server.getLocalPort());
@@ -42,6 +42,6 @@ public class ClientGameEngineCallbackServer {
 	}
 	
 	public HostDetails getHostDetails() {
-		return this.host;
+		return host;
 	}
 }

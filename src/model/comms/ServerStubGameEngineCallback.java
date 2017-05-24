@@ -80,4 +80,17 @@ public class ServerStubGameEngineCallback implements GameEngineCallback{
 		}
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof ServerStubGameEngineCallback) {
+			ServerStubGameEngineCallback ssgec = (ServerStubGameEngineCallback) o;
+			return (ssgec.getHostDetails().equals(this.getHostDetails()));
+		} else {
+			return o.equals(this);
+		}
+	}
+
+	private HostDetails getHostDetails() {
+		return this.host;
+	}
 }

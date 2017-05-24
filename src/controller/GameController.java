@@ -6,7 +6,6 @@ import model.GameEngineCallbackImpl;
 import model.SimplePlayer;
 import model.comms.GameEngineClientStub;
 import model.interfaces.GameEngine;
-import model.interfaces.GameEngineCallback;
 import model.interfaces.Player;
 import view.Round;
 
@@ -60,6 +59,7 @@ public class GameController {
 		Collection<Player> p = gameEngine.getAllPlayers();
 		Player[] players = new Player[p.size()];
 		p.toArray(players);
+		gameEngine.addGameEngineCallback(new GameEngineCallbackImpl(gameGui));
 	}
 	
 	/**

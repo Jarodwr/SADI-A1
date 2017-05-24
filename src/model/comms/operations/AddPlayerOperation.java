@@ -13,8 +13,7 @@ public class AddPlayerOperation extends AbstractGameOperation{
 	
 	@Override
 	public void execute(GameEngine ge) {
-		// TODO Auto-generated method stub
-		
+		ge.addPlayer(player);
 	}
 
 }

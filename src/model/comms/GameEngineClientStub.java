@@ -1,5 +1,6 @@
 package model.comms;
 
+import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.Deque;
 import java.io.DataInputStream;
@@ -26,7 +27,8 @@ public class GameEngineClientStub implements GameEngine{
 	private Socket receiverSocket;
 	private ObjectInputStream ois;
 	private DataInputStream dis;
-
+	
+	private ClientGameEngineCallbackServer cgecs;
 	
 	public GameEngineClientStub() {
 		try {
@@ -49,7 +51,6 @@ public class GameEngineClientStub implements GameEngine{
 	
 	@Override
 	public void dealPlayer(Player player, int delay) {
-		// TODO: socket stuff
 		try {
 			oos.writeObject(new DealOperation(player, delay));
 		} catch (IOException e) {
@@ -111,7 +112,8 @@ public class GameEngineClientStub implements GameEngine{
 	@Override
 	public void addGameEngineCallback(GameEngineCallback gameEngineCallback) {
 		try {
-			oos.writeObject(new AddGameEngineCallbackOperation(gameEngineCallback));
+			cgecs = new ClientGameEngineCallbackServer(gameEngineCallback);
+			oos.writeObject(new AddGameEngineCallbackOperation(cgecs.getHostDetails()));
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 		}
@@ -120,7 +122,7 @@ public class GameEngineClientStub implements GameEngine{
 	@Override
 	public void removeGameEngineCallback(GameEngineCallback gameEngineCallback) {
 		try {
-			oos.writeObject(new RemoveGameEngineCallbackOperation(gameEngineCallback));
+			oos.writeObject(new RemoveGameEngineCallbackOperation(cgecs.getHostDetails()));
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 		}
@@ -134,7 +136,15 @@ public class GameEngineClientStub implements GameEngine{
 			System.out.println(e.getMessage());
 		}
 		
-		return (Collection<Player>) getObjectReturn();
+		Collection<Player> allPlayers = new ArrayDeque<Player>();
+		Object obj = getObjectReturn();
+		if (obj instanceof Collection<?>) {
+			Collection<?> cn = (Collection<?>) obj;
+			for (Object p : cn) {
+				allPlayers.add((Player) p);
+			}
+		}
+		return allPlayers;
 	}
 
 	@Override
@@ -156,7 +166,15 @@ public class GameEngineClientStub implements GameEngine{
 			System.out.println(e.getMessage());
 		}
 		
-		return (Deque<PlayingCard>) getObjectReturn();
+		Deque<PlayingCard> sd = new ArrayDeque<PlayingCard>();
+		Object obj = getObjectReturn();
+		if (obj instanceof Deque<?>) {
+			Deque<?> dq = (Deque<?>) obj;
+			for (Object pc : dq) {
+				sd.add((PlayingCard) pc);
+			}
+		}
+		return sd;
 	}
 	
 	private boolean getBoolReturn() {

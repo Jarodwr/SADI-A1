@@ -151,7 +151,12 @@ public class GameEngineImpl implements GameEngine{
 
 	@Override
 	public void removeGameEngineCallback(GameEngineCallback gameEngineCallback) {
-		callbacks.remove(gameEngineCallback);
+		for (GameEngineCallback gec : callbacks) {
+			if (gec.equals(gameEngineCallback)) {
+				callbacks.remove(gec);
+				return;
+			}
+		}
 		
 	}
 

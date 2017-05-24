@@ -1,20 +1,19 @@
 package model.comms.operations;
 
+import model.comms.HostDetails;
+import model.comms.ServerStubGameEngineCallback;
 import model.interfaces.GameEngine;
-import model.interfaces.GameEngineCallback;
 
 public class AddGameEngineCallbackOperation extends AbstractGameOperation{
-	GameEngineCallback gec;
+	HostDetails host;
 	
-	public AddGameEngineCallbackOperation(GameEngineCallback gec) {
-		this.gec = gec;
+	public AddGameEngineCallbackOperation(HostDetails host) {
+		this.host = host;
 	}
 	
-	//TODO: This might require host details
 	@Override
 	public void execute(GameEngine ge) {
-		// TODO Auto-generated method stub
-		
+		ge.addGameEngineCallback(new ServerStubGameEngineCallback(host));
 	}
 
 }
