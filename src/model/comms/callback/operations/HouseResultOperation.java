@@ -4,6 +4,10 @@ import model.interfaces.GameEngineCallback;
 
 public class HouseResultOperation extends AbstractCallbackOperation{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4167978469088100272L;
 	int result;
 	
 	public HouseResultOperation(int result) {
@@ -12,8 +16,7 @@ public class HouseResultOperation extends AbstractCallbackOperation{
 	
 	@Override
 	public void execute(GameEngineCallback gui) {
-		// TODO Auto-generated method stub
-		
+		gui.houseResult(result, null);
 	}
 
 }

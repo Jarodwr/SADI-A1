@@ -9,6 +9,10 @@ import model.interfaces.GameEngine;
 
 public class GetAllPlayersOperation extends AbstractGameOperation{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3729126252879981427L;
 	HostDetails host;
 	
 	public GetAllPlayersOperation(HostDetails host) {

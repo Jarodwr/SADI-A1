@@ -5,6 +5,10 @@ import model.comms.ServerStubGameEngineCallback;
 import model.interfaces.GameEngine;
 
 public class AddGameEngineCallbackOperation extends AbstractGameOperation{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2843286608238531125L;
 	HostDetails host;
 	
 	public AddGameEngineCallbackOperation(HostDetails host) {

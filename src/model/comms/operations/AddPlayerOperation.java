@@ -5,6 +5,10 @@ import model.interfaces.Player;
 
 public class AddPlayerOperation extends AbstractGameOperation{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2583884800945004868L;
 	Player player;
 	
 	public AddPlayerOperation(Player player) {

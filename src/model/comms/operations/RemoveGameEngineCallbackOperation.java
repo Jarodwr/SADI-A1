@@ -6,6 +6,10 @@ import model.interfaces.GameEngine;
 
 public class RemoveGameEngineCallbackOperation extends AbstractGameOperation{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1803133792349815203L;
 	HostDetails host;
 	
 	public RemoveGameEngineCallbackOperation(HostDetails host) {

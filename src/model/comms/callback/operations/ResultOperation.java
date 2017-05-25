@@ -5,6 +5,10 @@ import model.interfaces.Player;
 
 public class ResultOperation extends AbstractCallbackOperation{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8699379996388185696L;
 	Player player;
 	int result;
 	
@@ -15,8 +19,7 @@ public class ResultOperation extends AbstractCallbackOperation{
 	
 	@Override
 	public void execute(GameEngineCallback gui) {
-		// TODO Auto-generated method stub
-		
+		gui.result(player, result, null);
 	}
 
 }

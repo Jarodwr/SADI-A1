@@ -10,6 +10,10 @@ import model.interfaces.Player;
 
 public class PlaceBetOperation extends AbstractGameOperation{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7969807789259913473L;
 	HostDetails host;
 	Player player;
 	int bet;

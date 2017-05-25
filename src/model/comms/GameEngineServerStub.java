@@ -30,7 +30,6 @@ public class GameEngineServerStub {
 		while(true) {
 			try {
 				AbstractGameOperation operation = (AbstractGameOperation) ois.readObject();
-				ois.reset();
 				operation.execute(ge);
 			} catch (ClassNotFoundException | IOException e) {
 				e.printStackTrace();

@@ -107,12 +107,12 @@ public class Round extends JPanel {
 
 	}
 	
-	public void getCurrentPlayer() {
-		
+	public Player getCurrentPlayer() {
+		return main.getCurrentPlayer();
 	}
 	
-	public void setCurrentPlayer() {
-		
+	public void setCurrentPlayer(Player p) {
+		main.setCurrentPlayer(p);
 	}
 	
 	public void setPlayers() {

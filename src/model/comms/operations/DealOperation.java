@@ -5,6 +5,10 @@ import model.interfaces.Player;
 
 public class DealOperation extends AbstractGameOperation{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8075366754905307264L;
 	Player player;
 	int delay;
 	
@@ -15,7 +19,11 @@ public class DealOperation extends AbstractGameOperation{
 	
 	@Override
 	public void execute(GameEngine ge) {
-		ge.dealPlayer(player, delay);
+		if (player != null) {
+			ge.dealPlayer(player, delay);
+		} else {
+			ge.dealHouse(delay);
+		}
 		
 	}
 

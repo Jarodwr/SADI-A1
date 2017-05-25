@@ -16,29 +16,40 @@ public class ClientGameEngineCallbackServer {
 	private ObjectInputStream ois;
 	private HostDetails host;
 	
+	private Thread pollThread = new Thread() {
+		public void run() {
+			while(!Thread.currentThread().isInterrupted()) {
+				try {
+					AbstractCallbackOperation operation = (AbstractCallbackOperation) ois.readObject();
+					operation.execute(gec);
+				} catch (ClassNotFoundException | IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	};
+	
 	public ClientGameEngineCallbackServer(GameEngineCallback gec) {
 		this.gec = gec;
 		try {
 			server = new ServerSocket(0);
 			host = new HostDetails(server.getInetAddress().getHostAddress(), server.getLocalPort());
-			socket = server.accept();
-			ois = new ObjectInputStream(socket.getInputStream());
+			new Thread() {
+				public void run() {
+					try {
+						socket = server.accept();
+						ois = new ObjectInputStream(socket.getInputStream());
+						pollThread.start();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					
+				}
+			}.start();
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
 		
-	}
-	
-	public void poll() {
-		while(true) {
-			try {
-				AbstractCallbackOperation operation = (AbstractCallbackOperation) ois.readObject();
-				ois.reset();
-				operation.execute(gec);
-			} catch (ClassNotFoundException | IOException e) {
-				e.printStackTrace();
-			}
-		}
 	}
 	
 	public HostDetails getHostDetails() {

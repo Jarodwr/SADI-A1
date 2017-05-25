@@ -66,7 +66,6 @@ public class GameEngineImpl implements GameEngine{
 		
 		for (GameEngineCallback c : callbacks) {
 			c.result(player, result, this);
-			System.out.println(player.getPlayerName());
 		}
 		
 		player.setResult(result);	//update result in player

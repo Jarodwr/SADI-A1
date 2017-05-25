@@ -10,6 +10,10 @@ import model.interfaces.Player;
 
 public class RemovePlayerOperation extends AbstractGameOperation{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2967520206531212076L;
 	HostDetails host;
 	Player player;
 	

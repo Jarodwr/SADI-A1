@@ -1,9 +1,15 @@
 package model;
 
+import java.io.Serializable;
+
 import model.interfaces.PlayingCard;
 
-public class PlayingCardImpl implements PlayingCard{
+public class PlayingCardImpl implements PlayingCard, Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1524026798302626317L;
 	private Suit suit;
 	private Value value;
 	

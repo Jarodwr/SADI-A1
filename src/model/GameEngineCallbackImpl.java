@@ -49,6 +49,9 @@ public class GameEngineCallbackImpl implements GameEngineCallback{
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run(){
 					gui.result(player, result);
+					if (gui.getCurrentPlayer().getPlayerId().equals(player.getPlayerId())) {
+						gui.setCurrentPlayer(player);
+					}
 				}
 			});
 	}

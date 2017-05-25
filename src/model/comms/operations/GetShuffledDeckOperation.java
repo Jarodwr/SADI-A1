@@ -9,6 +9,10 @@ import model.interfaces.GameEngine;
 
 public class GetShuffledDeckOperation extends AbstractGameOperation{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6725962309406710235L;
 	HostDetails host;
 	
 	public GetShuffledDeckOperation(HostDetails host) {

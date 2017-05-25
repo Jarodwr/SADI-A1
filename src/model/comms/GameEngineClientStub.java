@@ -18,34 +18,18 @@ import model.interfaces.PlayingCard;
 
 public class GameEngineClientStub implements GameEngine{
 
-	private HostDetails host = new HostDetails(null, 0); //TODO: Add details
+	private HostDetails host = new HostDetails("192.168.1.6", 50000); //TODO: Add details
 	private Socket socket;
 	private ObjectOutputStream oos;
 	
-	private HostDetails clientDetails;
-	private ServerSocket returnReceiver;
-	private Socket receiverSocket;
-	private ObjectInputStream ois;
-	private DataInputStream dis;
-	
-	private ClientGameEngineCallbackServer cgecs;
+	private HostDetails callbackServer;
 	
 	public GameEngineClientStub() {
 		try {
 			this.socket = new Socket(host.getHostname(), host.getPort());
 			this.oos = new ObjectOutputStream(socket.getOutputStream());
 		} catch (IOException e) {
-			System.out.println(e.getMessage());
-		}
-		
-		try {
-			returnReceiver = new ServerSocket(0);
-			clientDetails = new HostDetails(returnReceiver.getLocalPort());
-			receiverSocket = returnReceiver.accept();
-			ois = new ObjectInputStream(receiverSocket.getInputStream());
-			dis = new DataInputStream(receiverSocket.getInputStream());
-		} catch (IOException e) {
-			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 	}
 	
@@ -54,7 +38,7 @@ public class GameEngineClientStub implements GameEngine{
 		try {
 			oos.writeObject(new DealOperation(player, delay));
 		} catch (IOException e) {
-			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 	}
 
@@ -63,7 +47,7 @@ public class GameEngineClientStub implements GameEngine{
 		try {
 			oos.writeObject(new DealOperation(null, delay));
 		} catch (IOException e) {
-			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 	}
 
@@ -72,7 +56,7 @@ public class GameEngineClientStub implements GameEngine{
 		try {
 			oos.writeObject(new AddPlayerOperation(player));
 		} catch (IOException e) {
-			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 		
 	}
@@ -80,23 +64,51 @@ public class GameEngineClientStub implements GameEngine{
 	@Override
 	public Player getPlayer(String id) {
 		try {
+			
+			ServerSocket tempReturnServer = new ServerSocket(0);
+			HostDetails clientDetails = new HostDetails(tempReturnServer.getLocalPort());
+			
 			oos.writeObject(new GetPlayerOperation(clientDetails, id));
-		} catch (IOException e) {
-			System.out.println(e.getMessage());
+			
+			Socket receiverSocket = tempReturnServer.accept();
+			ObjectInputStream ois = new ObjectInputStream(receiverSocket.getInputStream());
+			
+			Object obj = ois.readObject();
+			
+			ois.close();
+			receiverSocket.close();
+			tempReturnServer.close();
+			
+			return (Player) obj;
+		} catch (ClassNotFoundException | IOException e) {
+			e.printStackTrace();
 		}
-		
-		return (Player) getObjectReturn();
+		return null;
 	}
 
 	@Override
 	public boolean removePlayer(Player player) {
 		try {
-			oos.writeObject(new RemovePlayerOperation(clientDetails, player));
-		} catch (IOException e) {
-			System.out.println(e.getMessage());
-		}
 
-		return getBoolReturn();
+			ServerSocket tempReturnServer = new ServerSocket(0);
+			HostDetails clientDetails = new HostDetails(tempReturnServer.getLocalPort());
+			
+			oos.writeObject(new RemovePlayerOperation(clientDetails, player));
+			
+			Socket receiverSocket = tempReturnServer.accept();
+			DataInputStream dis = new DataInputStream(receiverSocket.getInputStream());
+			
+			boolean value = dis.readBoolean();
+			
+			dis.close();
+			receiverSocket.close();
+			tempReturnServer.close();
+			return value;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return false;
 	}
 
 	@Override
@@ -104,7 +116,7 @@ public class GameEngineClientStub implements GameEngine{
 		try {
 			oos.writeObject(new CalculateResultOperation());
 		} catch (IOException e) {
-			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 		
 	}
@@ -112,93 +124,116 @@ public class GameEngineClientStub implements GameEngine{
 	@Override
 	public void addGameEngineCallback(GameEngineCallback gameEngineCallback) {
 		try {
-			cgecs = new ClientGameEngineCallbackServer(gameEngineCallback);
+			ClientGameEngineCallbackServer cgecs = new ClientGameEngineCallbackServer(gameEngineCallback);
+			callbackServer = cgecs.getHostDetails();
 			oos.writeObject(new AddGameEngineCallbackOperation(cgecs.getHostDetails()));
 		} catch (IOException e) {
-			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 	}
 
 	@Override
 	public void removeGameEngineCallback(GameEngineCallback gameEngineCallback) {
 		try {
-			oos.writeObject(new RemoveGameEngineCallbackOperation(cgecs.getHostDetails()));
+			oos.writeObject(new RemoveGameEngineCallbackOperation(callbackServer));
 		} catch (IOException e) {
-			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 	}
 
 	@Override
 	public Collection<Player> getAllPlayers() {
 		try {
+			
+			ServerSocket tempReturnServer = new ServerSocket(0);
+			HostDetails clientDetails = new HostDetails(tempReturnServer.getLocalPort());
+			
 			oos.writeObject(new GetAllPlayersOperation(clientDetails));
-		} catch (IOException e) {
-			System.out.println(e.getMessage());
+			
+			Socket receiverSocket = tempReturnServer.accept();
+			ObjectInputStream ois = new ObjectInputStream(receiverSocket.getInputStream());
+			
+
+			Object obj = ois.readObject();
+			
+			ois.close();
+			receiverSocket.close();
+			tempReturnServer.close();
+
+			Collection<Player> allPlayers = new ArrayDeque<Player>();
+			if (obj instanceof Collection<?>) {
+				Collection<?> cn = (Collection<?>) obj;
+				for (Object p : cn) {
+					allPlayers.add((Player) p);
+				}
+			}
+			
+			return allPlayers;
+		} catch (ClassNotFoundException | IOException e) {
+			e.printStackTrace();
 		}
 		
-		Collection<Player> allPlayers = new ArrayDeque<Player>();
-		Object obj = getObjectReturn();
-		if (obj instanceof Collection<?>) {
-			Collection<?> cn = (Collection<?>) obj;
-			for (Object p : cn) {
-				allPlayers.add((Player) p);
-			}
-		}
-		return allPlayers;
+		return null;
+
 	}
 
 	@Override
 	public boolean placeBet(Player player, int bet) {
 		try {
+
+			ServerSocket tempReturnServer = new ServerSocket(0);
+			HostDetails clientDetails = new HostDetails(tempReturnServer.getLocalPort());
+			
 			oos.writeObject(new PlaceBetOperation(clientDetails, player, bet));
+			
+			Socket receiverSocket = tempReturnServer.accept();
+			DataInputStream dis = new DataInputStream(receiverSocket.getInputStream());
+			
+			boolean value = dis.readBoolean();
+			
+			dis.close();
+			receiverSocket.close();
+			tempReturnServer.close();
+			
+			return value;
 		} catch (IOException e) {
-			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
+		return false;
 		
-		return getBoolReturn();
 	}
 
 	@Override
 	public Deque<PlayingCard> getShuffledDeck() {
 		try {
+			ServerSocket tempReturnServer = new ServerSocket(0);
+			HostDetails clientDetails = new HostDetails(tempReturnServer.getLocalPort());
+			
 			oos.writeObject(new GetShuffledDeckOperation(clientDetails));
-		} catch (IOException e) {
-			System.out.println(e.getMessage());
+			
+			Socket receiverSocket = tempReturnServer.accept();
+			ObjectInputStream ois = new ObjectInputStream(receiverSocket.getInputStream());
+			
+			Object obj = ois.readObject();
+			
+			ois.close();
+			receiverSocket.close();
+			tempReturnServer.close();
+
+			Deque<PlayingCard> sd = new ArrayDeque<PlayingCard>();
+			if (obj instanceof Deque<?>) {
+				Deque<?> dq = (Deque<?>) obj;
+				for (Object pc : dq) {
+					sd.add((PlayingCard) pc);
+				}
+			}
+			return sd;
+		} catch (ClassNotFoundException | IOException e) {
+			e.printStackTrace();
 		}
 		
-		Deque<PlayingCard> sd = new ArrayDeque<PlayingCard>();
-		Object obj = getObjectReturn();
-		if (obj instanceof Deque<?>) {
-			Deque<?> dq = (Deque<?>) obj;
-			for (Object pc : dq) {
-				sd.add((PlayingCard) pc);
-			}
-		}
-		return sd;
-	}
-	
-	private boolean getBoolReturn() {
-		try {
-			boolean bool = dis.readBoolean();
-			dis.reset();
-			return bool;
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
-	
-	private Object getObjectReturn() {
-		try {
-			Object obj = ois.readObject();
-			ois.reset();
-			return obj;
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
 		return null;
-	}
 
+	}
+	
 }

@@ -6,6 +6,10 @@ import java.net.UnknownHostException;
 
 public class HostDetails implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5043670466003878785L;
 	private String hostname;
 	private int port;
 	

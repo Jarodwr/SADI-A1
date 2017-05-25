@@ -6,6 +6,10 @@ import model.interfaces.PlayingCard;
 
 public class NextCardOperation extends AbstractCallbackOperation{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1641014811600220299L;
 	Player player;
 	PlayingCard card;
 	
@@ -16,8 +20,7 @@ public class NextCardOperation extends AbstractCallbackOperation{
 	
 	@Override
 	public void execute(GameEngineCallback gui) {
-		// TODO Auto-generated method stub
-		
+		gui.nextCard(player, card, null);
 	}
 
 }

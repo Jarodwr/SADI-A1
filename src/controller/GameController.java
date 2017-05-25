@@ -31,9 +31,12 @@ public class GameController {
 					latestId = c;
 			}
 			gameEngine.addPlayer(new SimplePlayer(Integer.toString(latestId+1), name, points));
+			
 			return gameEngine.getPlayer(Integer.toString(latestId+1));
 		}
+		
 		return null;	//no player is created
+		
 	}
 	
 	/**
@@ -45,10 +48,10 @@ public class GameController {
 	public boolean makeBet(String id, int bet) {
 		Player p = gameEngine.getPlayer(id);
 		
-		if (p != null)
+		if (p != null) {
 			return gameEngine.placeBet(p, bet);
-		else
-			return false;
+		}
+		return false;
 	}
 	
 	/**
@@ -67,12 +70,12 @@ public class GameController {
 	 */
 	public void round() {
 		new Thread(new Runnable() {
-
 			@Override
 			public void run() {
 				int dt = 1000;	//	Delay time
-				for (Player player : gameEngine.getAllPlayers())
+				for (Player player : gameEngine.getAllPlayers()) {
 					gameEngine.dealPlayer(player, dt);
+				}
 				gameEngine.dealHouse(dt);
 			}
 		}).start();
@@ -91,11 +94,6 @@ public class GameController {
 	
 	public boolean savePlayers() {
 		return false;
-	}
-	
-	public Player[] addPlayers() {
-		//hardcoded, this function isn't actually called yet
-		return new Player[]{new SimplePlayer("0", "Jarod", 1000), new SimplePlayer("1", "Mike", 1000), new SimplePlayer("2", "Corey", 1000)};
 	}
 	
 	public void removePlayer() {

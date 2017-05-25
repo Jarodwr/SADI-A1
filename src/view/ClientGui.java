@@ -14,9 +14,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-@SuppressWarnings("serial")
 public class ClientGui extends JFrame {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5561312846222115498L;
 	private GameController c = new GameController();
 	private Player currentPlayer = null;
 	
