@@ -64,7 +64,6 @@ public class GameEngineClientStub implements GameEngine{
 	@Override
 	public Player getPlayer(String id) {
 		try {
-			
 			ServerSocket tempReturnServer = new ServerSocket(0);
 			HostDetails clientDetails = new HostDetails(tempReturnServer.getLocalPort());
 			
@@ -144,7 +143,6 @@ public class GameEngineClientStub implements GameEngine{
 	@Override
 	public Collection<Player> getAllPlayers() {
 		try {
-			
 			ServerSocket tempReturnServer = new ServerSocket(0);
 			HostDetails clientDetails = new HostDetails(tempReturnServer.getLocalPort());
 			
@@ -152,14 +150,13 @@ public class GameEngineClientStub implements GameEngine{
 			
 			Socket receiverSocket = tempReturnServer.accept();
 			ObjectInputStream ois = new ObjectInputStream(receiverSocket.getInputStream());
-			
 
 			Object obj = ois.readObject();
 			
 			ois.close();
 			receiverSocket.close();
 			tempReturnServer.close();
-
+			
 			Collection<Player> allPlayers = new ArrayDeque<Player>();
 			if (obj instanceof Collection<?>) {
 				Collection<?> cn = (Collection<?>) obj;

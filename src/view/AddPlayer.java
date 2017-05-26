@@ -84,6 +84,7 @@ public class AddPlayer extends JPanel {
 					try {
 						Integer.parseInt(points.getText());
 						Player np = main.getController().addPlayer(name.getText(), Integer.parseInt(points.getText()));
+						
 						if (np == null) {
 							JOptionPane.showMessageDialog(main, "Could not add player");
 						} else {

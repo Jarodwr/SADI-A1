@@ -23,18 +23,20 @@ public class GameController {
 		if (name.length() > 0 && points > 0) {
 			
 			// Find the largest id and set the new player's id to the largest + 1
-			int latestId = -1;	
+			int latestId = -1;
 			for (Player p : gameEngine.getAllPlayers()) {
 				int c = Integer.parseInt(p.getPlayerId());
 				
 				if (c > latestId)
 					latestId = c;
 			}
-			gameEngine.addPlayer(new SimplePlayer(Integer.toString(latestId+1), name, points));
 			
+			gameEngine.addPlayer(new SimplePlayer(Integer.toString(latestId+1), name, points));
+
 			return gameEngine.getPlayer(Integer.toString(latestId+1));
 		}
-		
+
+		System.out.println("nayyyy");
 		return null;	//no player is created
 		
 	}

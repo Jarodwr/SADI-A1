@@ -75,6 +75,8 @@ public class Round extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (btnResults.getText().equals("Results")){
+					main.getController().postRound();
+					main.setCurrentPlayer(main.getController().getPlayerbyId(main.getCurrentPlayer().getPlayerId()));
 					main.page("results");
 					resetView();	//Reset board
 				}

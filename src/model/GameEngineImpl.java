@@ -65,10 +65,10 @@ public class GameEngineImpl implements GameEngine{
 		} while (result != prevResult);	//Keep drawing cards while the player has not reached the point cap
 		
 		for (GameEngineCallback c : callbacks) {
+			player.setResult(result);	//update result in player
 			c.result(player, result, this);
 		}
 		
-		player.setResult(result);	//update result in player
 	}
 
 	@Override
@@ -128,6 +128,7 @@ public class GameEngineImpl implements GameEngine{
 	@Override
 	public void calculateResult() {
 		//post round post results screen
+		System.out.println("result");
 		for (Player player : players) {
 			int pr = player.getResult();
 			

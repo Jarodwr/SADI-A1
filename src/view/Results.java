@@ -36,7 +36,6 @@ public class Results extends JPanel {
 		btnNewButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				main.getController().postRound();
 				main.getController().getPlayerbyId(main.getCurrentPlayer().getPlayerId());
 				resultBoard.removeAll();
 				repaint();
