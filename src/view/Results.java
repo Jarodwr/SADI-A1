@@ -39,6 +39,7 @@ public class Results extends JPanel {
 				main.getController().getPlayerbyId(main.getCurrentPlayer().getPlayerId());
 				resultBoard.removeAll();
 				repaint();
+				main.resetRound();
 				main.page("place bet");
 			}
 		});
@@ -77,6 +78,7 @@ public class Results extends JPanel {
 	public void addResults(ArrayList<Player> players, int dealerResult) {
 		this.dealerResult = dealerResult;
 		for (Player p : players) {
+			System.out.println(p.getResult() + " | " + dealerResult);
 			int r = p.getResult();
 			String color = "black";
 			System.out.println(r < dealerResult);

@@ -9,8 +9,8 @@ public class ResultOperation extends AbstractCallbackOperation{
 	 * 
 	 */
 	private static final long serialVersionUID = -8699379996388185696L;
-	Player player;
-	int result;
+	private Player player;
+	private int result;
 	
 	public ResultOperation(Player player, int result) {
 		this.player = player;
@@ -18,8 +18,8 @@ public class ResultOperation extends AbstractCallbackOperation{
 	}
 	
 	@Override
-	public void execute(GameEngineCallback gui) {
-		gui.result(player, result, null);
+	public void execute(GameEngineCallback gec) {
+		gec.result(player, result, null);
 	}
 
 }

@@ -18,7 +18,7 @@ import model.interfaces.PlayingCard;
 
 public class GameEngineClientStub implements GameEngine{
 
-	private HostDetails host = new HostDetails("192.168.1.6", 50000); //TODO: Add details
+	private HostDetails host = new HostDetails("192.168.1.6", 50001); //TODO: Add details
 	private Socket socket;
 	private ObjectOutputStream oos;
 	

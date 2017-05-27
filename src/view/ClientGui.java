@@ -109,8 +109,8 @@ public class ClientGui extends JFrame {
 		players.add(player);
 	}
 	
-	public void setDealerResult(int d) {
-		this.dealerResult = d;
+	public void setDealerResult(int dealerResult) {
+		this.dealerResult = dealerResult;
 	}
 	
 	/**

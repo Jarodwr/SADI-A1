@@ -12,141 +12,171 @@ import model.interfaces.GameEngineCallback;
 import model.interfaces.Player;
 import model.interfaces.PlayingCard;
 
-public class GameEngineImpl implements GameEngine{
+public class GameEngineImpl implements GameEngine {
 
-	ArrayList<GameEngineCallback> callbacks = new ArrayList<GameEngineCallback>();	//Stores callbacks
-	
-	ArrayList<Player> players = new ArrayList<Player>();	//Stores players
-	ArrayDeque<PlayingCard> shuffledDeck = new ArrayDeque<PlayingCard>();	//Stores deck
-	
-	PlayingCard[] standardDeck = new PlayingCard[52];	//	Base deck
-	
-	int houseResult = 0;
-	
+	private ArrayList<GameEngineCallback> callbacks = new ArrayList<GameEngineCallback>();
+	private PlayingCard[] standardDeck = new PlayingCard[52];
+	private ArrayList<Player> players = new ArrayList<Player>();
+	private ArrayDeque<PlayingCard> currentDeck = new ArrayDeque<PlayingCard>();
+
+	private int houseResult = 0;
+
 	/**
 	 * Sets up the shuffled deck, makes it easier to
 	 */
 	public GameEngineImpl() {
-		
-		//Set deck
+
 		PlayingCard.Suit[] suits = PlayingCard.Suit.values();
 		PlayingCard.Value[] values = PlayingCard.Value.values();
-		for (int i = 0; i < suits.length; i++)
-			for (int j = 0; j < values.length; j++)
-				this.standardDeck[(i*values.length)+j] = new PlayingCardImpl(suits[i],values[j]);
+		for (int i = 0; i < suits.length; i++) {
+			for (int j = 0; j < values.length; j++) {
+				this.standardDeck[(i * values.length) + j] = new PlayingCardImpl(suits[i], values[j]);
+				
+			}
+			
+		}
+		currentDeck = (ArrayDeque<PlayingCard>) getShuffledDeck();
 
-		shuffledDeck = (ArrayDeque<PlayingCard>) getShuffledDeck();
 	}
-	
+
 	@Override
 	public void dealPlayer(Player player, int delay) {
 		int result = 0;
 		int prevResult = 0;
+
 		do {
 			prevResult = result;
-			PlayingCard card = shuffledDeck.removeFirst();
-			
+			PlayingCard card = currentDeck.removeFirst();
+
 			try {
-				Thread.sleep(delay);	//delay
+				Thread.sleep(delay); // delay
+
 			} catch (InterruptedException e) {
-				System.out.println(e.getMessage());
+				e.printStackTrace();
+
 			}
-			
-			if (result + card.getScore() <= 21) {	//Check that the player has not busted
-				for (GameEngineCallback c : callbacks)
+
+			if (result + card.getScore() <= 21) { // Check that the player has
+													// not busted
+				for (GameEngineCallback c : callbacks) {
 					c.nextCard(player, card, this);
-				
-				result += card.getScore();	//update result
+
+				}
+				result += card.getScore(); // update result
+
 			} else {
-				for (GameEngineCallback c : callbacks)
+				for (GameEngineCallback c : callbacks) {
 					c.bustCard(player, card, this);
+
+				}
 			}
-			
-		} while (result != prevResult);	//Keep drawing cards while the player has not reached the point cap
+
+		} while (result != prevResult); // Keep drawing cards while the player
+										// has not reached the point cap
 		
 		for (GameEngineCallback c : callbacks) {
-			player.setResult(result);	//update result in player
+			player.setResult(result); // update result in player
+			System.out.println("Please work!?!? " + player.getResult());
 			c.result(player, result, this);
+
 		}
-		
+
 	}
 
 	@Override
 	public void dealHouse(int delay) {
 		int result = 0;
 		int prevResult = 0;
-		
+
 		do {
 			prevResult = result;
-			PlayingCard card = shuffledDeck.removeFirst();
+			PlayingCard card = currentDeck.removeFirst();
 
 			try {
-				Thread.sleep(delay);	//delay
+				Thread.sleep(delay);
+
 			} catch (InterruptedException e) {
-				System.out.println(e.getMessage());
-			}
-			
-			if (result + card.getScore() <= 21) {	//check for bust
-				for (GameEngineCallback c : callbacks)
-					c.nextHouseCard(card, this);
-				result += card.getScore();
-			} else {
-				for (GameEngineCallback c : callbacks)
-					c.houseBustCard(card, this);
+				e.printStackTrace();
+
 			}
 
-		} while (result != prevResult);	//keep dealing while not busted
-		
+			if (result + card.getScore() <= 21) { // check for bust
+				for (GameEngineCallback c : callbacks) {
+					c.nextHouseCard(card, this);
+
+				}
+				result += card.getScore();
+
+			} else {
+				for (GameEngineCallback c : callbacks) {
+					c.houseBustCard(card, this);
+
+				}
+
+			}
+
+		} while (result != prevResult); // keep dealing while not busted
+
 		for (GameEngineCallback c : callbacks) {
 			c.houseResult(result, this);
+			
 		}
-		
 		houseResult = result;
+
 	}
 
 	@Override
 	public void addPlayer(Player player) {
 		players.add(player);
-		
+
 	}
 
 	@Override
 	public Player getPlayer(String id) {
-		for (Player player : players)
-			if (id.equals(player.getPlayerId()))
+		for (Player player : players) {
+			if (id.equals(player.getPlayerId())) {
 				return player;
-
+				
+			}
+			
+		}
 		return null;
+
 	}
 
 	@Override
 	public boolean removePlayer(Player player) {
 		return players.remove(player);
-		
+
 	}
 
 	@Override
 	public void calculateResult() {
-		//post round post results screen
-		System.out.println("result");
+		// post round post results screen
 		for (Player player : players) {
-			int pr = player.getResult();
-			
-			//Set points
-			if (pr > houseResult)
+
+			// Set points
+			if (player.getResult() > houseResult) {
 				player.setPoints(player.getPoints() + player.getBet());
-			else if (pr < houseResult)
+
+			} else if (player.getResult() < houseResult) {
 				player.setPoints(player.getPoints() - player.getBet());
-				
-			player.resetBet();	//reset bet amount
-			player.setResult(0);	//reset result amount
+
+			}
+			//Reset player bet and result
+			player.resetBet();
+			player.setResult(0);
+
 		}
-		shuffledDeck = (ArrayDeque<PlayingCard>) getShuffledDeck(); //reset deck
+		//Reset deck post round
+		currentDeck = (ArrayDeque<PlayingCard>) getShuffledDeck();
+		
 	}
 
 	@Override
 	public void addGameEngineCallback(GameEngineCallback gameEngineCallback) {
 		callbacks.add(gameEngineCallback);
+
 	}
 
 	@Override
@@ -156,8 +186,9 @@ public class GameEngineImpl implements GameEngine{
 				callbacks.remove(gec);
 				return;
 			}
+
 		}
-		
+
 	}
 
 	@Override
@@ -172,15 +203,17 @@ public class GameEngineImpl implements GameEngine{
 
 	@Override
 	public Deque<PlayingCard> getShuffledDeck() {
-		
+
 		PlayingCard[] temp = this.standardDeck.clone();
 		Deque<PlayingCard> shuffled = new ArrayDeque<PlayingCard>();
-		
+
 		Collections.shuffle(Arrays.asList(temp));
-		
-		for (PlayingCard card : temp)
+
+		for (PlayingCard card : temp) {
 			shuffled.add(card);
-		
+		}
+
 		return shuffled;
 	}
+	
 }

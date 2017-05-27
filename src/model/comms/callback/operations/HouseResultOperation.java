@@ -15,8 +15,8 @@ public class HouseResultOperation extends AbstractCallbackOperation{
 	}
 	
 	@Override
-	public void execute(GameEngineCallback gui) {
-		gui.houseResult(result, null);
+	public void execute(GameEngineCallback gec) {
+		gec.houseResult(result, null);
 	}
 
 }

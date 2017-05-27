@@ -21,23 +21,20 @@ public class GameController {
 	 */
 	public Player addPlayer(String name, int points) {
 		if (name.length() > 0 && points > 0) {
-			
-			// Find the largest id and set the new player's id to the largest + 1
-			int latestId = -1;
+			int latestId = -1;	//Get a fresh ID
 			for (Player p : gameEngine.getAllPlayers()) {
 				int c = Integer.parseInt(p.getPlayerId());
-				
-				if (c > latestId)
+				if (c > latestId) {
 					latestId = c;
+					
+				}
+				
 			}
-			
 			gameEngine.addPlayer(new SimplePlayer(Integer.toString(latestId+1), name, points));
-
 			return gameEngine.getPlayer(Integer.toString(latestId+1));
+			
 		}
-
-		System.out.println("nayyyy");
-		return null;	//no player is created
+		return null;
 		
 	}
 	
@@ -49,9 +46,9 @@ public class GameController {
 	 */
 	public boolean makeBet(String id, int bet) {
 		Player p = gameEngine.getPlayer(id);
-		
 		if (p != null) {
 			return gameEngine.placeBet(p, bet);
+			
 		}
 		return false;
 	}
@@ -77,9 +74,12 @@ public class GameController {
 				int dt = 1000;	//	Delay time
 				for (Player player : gameEngine.getAllPlayers()) {
 					gameEngine.dealPlayer(player, dt);
+					
 				}
 				gameEngine.dealHouse(dt);
+				
 			}
+			
 		}).start();
 	}
 	
@@ -88,14 +88,17 @@ public class GameController {
 	 */
 	public void postRound() {
 		gameEngine.calculateResult();
+		
 	}
 	
 	public boolean loadPlayers() {
 		return false;
+		
 	}
 	
 	public boolean savePlayers() {
 		return false;
+		
 	}
 	
 	public void removePlayer() {
@@ -104,5 +107,6 @@ public class GameController {
 	
 	public Player getPlayerbyId(String id) {
 		return gameEngine.getPlayer(id);
+		
 	}
 }

@@ -76,7 +76,6 @@ public class Round extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				if (btnResults.getText().equals("Results")){
 					main.getController().postRound();
-					main.setCurrentPlayer(main.getController().getPlayerbyId(main.getCurrentPlayer().getPlayerId()));
 					main.page("results");
 					resetView();	//Reset board
 				}
@@ -111,10 +110,12 @@ public class Round extends JPanel {
 	
 	public Player getCurrentPlayer() {
 		return main.getCurrentPlayer();
+		
 	}
 	
 	public void setCurrentPlayer(Player p) {
 		main.setCurrentPlayer(p);
+		
 	}
 	
 	public void setPlayers() {
@@ -189,28 +190,32 @@ public class Round extends JPanel {
 		BufferedImage image = null;
 		try {
 			image = ImageIO.read(new File(".\\sprites\\" + filename + ".png"));
+			
 		} catch (Exception e){
-			System.out.println(e.getMessage());
+			e.printStackTrace();
+			
 		}
-		
-		if (image != null)
+		if (image != null) {
 			cardImage.setIcon(new ImageIcon(resizeCardSprite(image, 2)));
 		
+		}
 		cardLabel.setText(filename);
-		
 		if (playerId != null) {
 			if (main.getCurrentPlayer() != null && playerId.equals(main.getCurrentPlayer().getPlayerId())) {
 				JLabel c = new JLabel();
 				c.setIcon(new ImageIcon(resizeCardSprite(image, 0.5)));
-				yourCardSprites.add(c);;
+				yourCardSprites.add(c);
+				
 			}
+			
 		} else {
 			JLabel c = new JLabel();
 			c.setIcon(new ImageIcon(resizeCardSprite(image, 0.5)));
 			houseCardSprites.add(c);
+			
 		}
-		
 		repaint();
+		
 	}
 	
 	/**
@@ -224,11 +229,14 @@ public class Round extends JPanel {
 			message = "House ";
 			btnResults.setEnabled(true);
 			main.setDealerResult(result);
+			
 		} else {
 			message = player.getPlayerId() + ", " + player.getPlayerName() + ", ";
 			main.addRoundPlayer(player);
+			
 		}
 		JOptionPane.showMessageDialog(this, message + " result: " + result + ".");	//	Need to specify which player it's the result of
+		
 	}
 	
 	/**

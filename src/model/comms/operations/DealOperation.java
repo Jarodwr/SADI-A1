@@ -21,8 +21,10 @@ public class DealOperation extends AbstractGameOperation{
 	public void execute(GameEngine ge) {
 		if (player != null) {
 			ge.dealPlayer(player, delay);
+			
 		} else {
 			ge.dealHouse(delay);
+			
 		}
 		
 	}

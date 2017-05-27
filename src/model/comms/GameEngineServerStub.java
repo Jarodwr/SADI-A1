@@ -15,7 +15,7 @@ public class GameEngineServerStub {
 	
 	public GameEngineServerStub() {
 		try {
-			server = new ServerSocket(50000);
+			server = new ServerSocket(50001);
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
