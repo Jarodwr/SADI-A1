@@ -10,6 +10,12 @@ import model.interfaces.GameEngineCallback;
 import model.interfaces.Player;
 import model.interfaces.PlayingCard;
 
+/**
+ * Serverside game engine callback stub which sends
+ * callback operations back to the client
+ * @author Jarod
+ *
+ */
 public class ServerStubGameEngineCallback implements GameEngineCallback{
 	private HostDetails host;
 	private Socket socket;

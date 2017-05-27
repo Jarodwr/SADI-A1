@@ -8,9 +8,14 @@ import java.net.Socket;
 import model.comms.callback.operations.AbstractCallbackOperation;
 import model.interfaces.GameEngineCallback;
 
+/**
+ * Server on the client that receives GEC operations and
+ * parses executes them on the appropriate client-side GEC
+ * @author Jarod
+ *
+ */
 public class ClientGameEngineCallbackServer {
 	private GameEngineCallback gec;
-	
 	private ServerSocket server;
 	private Socket socket;
 	private ObjectInputStream ois;
@@ -23,12 +28,16 @@ public class ClientGameEngineCallbackServer {
 					AbstractCallbackOperation operation = (AbstractCallbackOperation) ois.readObject();
 					operation.execute(gec);
 				} catch (ClassNotFoundException | IOException e) {
-					e.printStackTrace();
+					return;
 				}
 			}
 		}
 	};
 	
+	/**
+	 * Initialize the server
+	 * @param gec	the GUI's callback
+	 */
 	public ClientGameEngineCallbackServer(GameEngineCallback gec) {
 		this.gec = gec;
 		try {
@@ -39,19 +48,27 @@ public class ClientGameEngineCallbackServer {
 					try {
 						socket = server.accept();
 						ois = new ObjectInputStream(socket.getInputStream());
-						pollThread.start();
+						pollThread.start();	//	poll without blocking
+						
 					} catch (IOException e) {
-						e.printStackTrace();
+						return;
+						
 					}
 					
 				}
 			}.start();
+			
 		} catch(IOException e) {
-			e.printStackTrace();
+			return;
+			
 		}
 		
 	}
 	
+	/**
+	 * Getter method
+	 * @return	HostDetails
+	 */
 	public HostDetails getHostDetails() {
 		return host;
 	}

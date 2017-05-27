@@ -19,8 +19,9 @@ public class NextCardOperation extends AbstractCallbackOperation{
 	}
 	
 	@Override
-	public void execute(GameEngineCallback gui) {
-		gui.nextCard(player, card, null);
+	public void execute(GameEngineCallback gec) {
+		gec.nextCard(player, card, null);
+		
 	}
 
 }

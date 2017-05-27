@@ -75,9 +75,9 @@ public class Round extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (btnResults.getText().equals("Results")){
-					main.getController().postRound();
 					main.page("results");
 					resetView();	//Reset board
+					
 				}
 				else if (btnResults.getText().equals("Start Game")) {
 					btnResults.setText("Results");
@@ -88,12 +88,19 @@ public class Round extends JPanel {
 							SwingUtilities.invokeLater(new Runnable() {
 								public void run() {
 									main.getController().round();
+									
 								}
+								
 							});
+							
 						}
+						
 					}.start();
+					
 				}
+				
 			}
+			
 		});
 		
 		add(board, BorderLayout.CENTER);
@@ -143,6 +150,7 @@ public class Round extends JPanel {
 		case Diamonds: 
 			filename += "d";
 		break;
+		
 		}
 		
 		switch (card.getValue()) {
@@ -185,6 +193,7 @@ public class Round extends JPanel {
 		case King: 
 			filename += "K";
 		break;
+		
 		}
 		
 		BufferedImage image = null;
@@ -195,10 +204,12 @@ public class Round extends JPanel {
 			e.printStackTrace();
 			
 		}
+		
 		if (image != null) {
 			cardImage.setIcon(new ImageIcon(resizeCardSprite(image, 2)));
 		
 		}
+		
 		cardLabel.setText(filename);
 		if (playerId != null) {
 			if (main.getCurrentPlayer() != null && playerId.equals(main.getCurrentPlayer().getPlayerId())) {
@@ -214,6 +225,9 @@ public class Round extends JPanel {
 			houseCardSprites.add(c);
 			
 		}
+		
+		btnResults.setText("Results");
+		btnResults.setEnabled(false);
 		repaint();
 		
 	}
@@ -232,7 +246,6 @@ public class Round extends JPanel {
 			
 		} else {
 			message = player.getPlayerId() + ", " + player.getPlayerName() + ", ";
-			main.addRoundPlayer(player);
 			
 		}
 		JOptionPane.showMessageDialog(this, message + " result: " + result + ".");	//	Need to specify which player it's the result of
@@ -261,5 +274,7 @@ public class Round extends JPanel {
 		btnResults.setText("Start Game");
 		cardImage.setIcon(null);
 		cardLabel.setText("");
+		
 	}
+	
 }

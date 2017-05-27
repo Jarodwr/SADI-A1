@@ -12,12 +12,11 @@ public class GameEngineCallbackImpl implements GameEngineCallback{
 
 	private Round gui = null;
 	
-	public GameEngineCallbackImpl() {
-
-	}
+	public GameEngineCallbackImpl() {}
 	
 	public GameEngineCallbackImpl(Round gui) {
 		this.gui = gui;
+		
 	}
 	
 	@Override
@@ -75,6 +74,7 @@ public class GameEngineCallbackImpl implements GameEngineCallback{
 					System.out.println("House, Card: " + card);
 					
 				}
+				
 			});
 			
 		}

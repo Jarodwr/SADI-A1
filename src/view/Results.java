@@ -39,7 +39,7 @@ public class Results extends JPanel {
 				main.getController().getPlayerbyId(main.getCurrentPlayer().getPlayerId());
 				resultBoard.removeAll();
 				repaint();
-				main.resetRound();
+				main.setDealerResult(0);
 				main.page("place bet");
 			}
 		});

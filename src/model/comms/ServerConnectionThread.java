@@ -7,6 +7,11 @@ import java.net.Socket;
 import model.comms.operations.AbstractGameOperation;
 import model.interfaces.GameEngine;
 
+/**
+ * Listens on its new connection and executes operations sent to it
+ * @author Jarod
+ *
+ */
 public class ServerConnectionThread extends Thread {
 	private Socket socket;
 	private GameEngine ge;

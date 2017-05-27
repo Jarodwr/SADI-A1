@@ -43,51 +43,9 @@ public class GameEngineImpl implements GameEngine {
 	public void dealPlayer(Player player, int delay) {
 		int result = 0;
 		int prevResult = 0;
-
-		do {
-			prevResult = result;
-			PlayingCard card = currentDeck.removeFirst();
-
-			try {
-				Thread.sleep(delay); // delay
-
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-
-			}
-
-			if (result + card.getScore() <= 21) { // Check that the player has
-													// not busted
-				for (GameEngineCallback c : callbacks) {
-					c.nextCard(player, card, this);
-
-				}
-				result += card.getScore(); // update result
-
-			} else {
-				for (GameEngineCallback c : callbacks) {
-					c.bustCard(player, card, this);
-
-				}
-			}
-
-		} while (result != prevResult); // Keep drawing cards while the player
-										// has not reached the point cap
+		player = getPlayer(player.getPlayerId());
 		
-		for (GameEngineCallback c : callbacks) {
-			player.setResult(result); // update result in player
-			System.out.println("Please work!?!? " + player.getResult());
-			c.result(player, result, this);
-
-		}
-
-	}
-
-	@Override
-	public void dealHouse(int delay) {
-		int result = 0;
-		int prevResult = 0;
-
+//		draw cards while the player has not reached the point cap
 		do {
 			prevResult = result;
 			PlayingCard card = currentDeck.removeFirst();
@@ -99,8 +57,51 @@ public class GameEngineImpl implements GameEngine {
 				e.printStackTrace();
 
 			}
+//			Check that the player has not busted
+			if (result + card.getScore() <= 21) {
+				for (GameEngineCallback c : callbacks) {
+					c.nextCard(player, card, this);
 
-			if (result + card.getScore() <= 21) { // check for bust
+				}
+//				update result
+				result += card.getScore();
+
+			} else {
+				for (GameEngineCallback c : callbacks) {
+					c.bustCard(player, card, this);
+
+				}
+			}
+
+		} while (result != prevResult);
+		
+		for (GameEngineCallback c : callbacks) {
+			player.setResult(result); // update result in player
+			c.result(player, result, this);
+
+		}
+
+	}
+
+	@Override
+	public void dealHouse(int delay) {
+		int result = 0;
+		int prevResult = 0;
+
+//		keep dealing while not busted
+		do {
+			prevResult = result;
+			PlayingCard card = currentDeck.removeFirst();
+
+			try {
+				Thread.sleep(delay);
+
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+
+			}
+//			check for bust
+			if (result + card.getScore() <= 21) {
 				for (GameEngineCallback c : callbacks) {
 					c.nextHouseCard(card, this);
 
@@ -115,7 +116,7 @@ public class GameEngineImpl implements GameEngine {
 
 			}
 
-		} while (result != prevResult); // keep dealing while not busted
+		} while (result != prevResult);
 
 		for (GameEngineCallback c : callbacks) {
 			c.houseResult(result, this);
@@ -146,7 +147,7 @@ public class GameEngineImpl implements GameEngine {
 
 	@Override
 	public boolean removePlayer(Player player) {
-		return players.remove(player);
+		return players.remove(getPlayer(player.getPlayerId()));
 
 	}
 
@@ -154,7 +155,6 @@ public class GameEngineImpl implements GameEngine {
 	public void calculateResult() {
 		// post round post results screen
 		for (Player player : players) {
-
 			// Set points
 			if (player.getResult() > houseResult) {
 				player.setPoints(player.getPoints() + player.getBet());
@@ -194,17 +194,18 @@ public class GameEngineImpl implements GameEngine {
 	@Override
 	public Collection<Player> getAllPlayers() {
 		return players;
+		
 	}
 
 	@Override
 	public boolean placeBet(Player player, int bet) {
-		return player.placeBet(bet);
+		return getPlayer(player.getPlayerId()).placeBet(bet);
 	}
 
 	@Override
 	public Deque<PlayingCard> getShuffledDeck() {
 
-		PlayingCard[] temp = this.standardDeck.clone();
+		PlayingCard[] temp = standardDeck.clone();
 		Deque<PlayingCard> shuffled = new ArrayDeque<PlayingCard>();
 
 		Collections.shuffle(Arrays.asList(temp));

@@ -12,7 +12,6 @@ import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 public class ClientGui extends JFrame {
 	
@@ -20,7 +19,7 @@ public class ClientGui extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = -5561312846222115498L;
-	private GameController c = new GameController();
+	private GameController controller = new GameController();
 	private Player currentPlayer = null;
 	
 	private CardLayout cards = new CardLayout();
@@ -30,7 +29,6 @@ public class ClientGui extends JFrame {
 	private Round round = new Round(this);
 	private Results results = new Results(this);
 	
-	private ArrayList<Player> players = new ArrayList<Player>();
 	private int dealerResult = 0;
 	
 	public ClientGui() {
@@ -61,17 +59,21 @@ public class ClientGui extends JFrame {
 		mntmQuit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				dispose();
+				
 			}
+			
 		});
 		
 		setSize(new Dimension(700,500));
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		
 	}
 
 	public GameController getController() {
-		return c;
+		return controller;
+		
 	}
 	
 	public void page(String s) {
@@ -86,39 +88,52 @@ public class ClientGui extends JFrame {
 			round.repaint();
 			break;
 		case "results":
-			results.addResults(players, dealerResult);
+			results.addResults(controller.getAllPlayers(), dealerResult);
 			results.announceResult();
+			if (currentPlayer.getResult() > dealerResult) {
+				currentPlayer.setPoints(currentPlayer.getPoints() + currentPlayer.getBet());
+				
+			}
+			else if (currentPlayer.getResult() < dealerResult) {
+				currentPlayer.setPoints(currentPlayer.getPoints() - currentPlayer.getBet());
+				
+			}
+			currentPlayer.resetBet();
+			currentPlayer.setResult(0);
+			controller.postRound();
 			break;
+			
 		}
 		cards.show(this.getContentPane(), s);
+		
 	}
 	
 	public Round getRound() {
 		return this.round;
+		
 	}
 	
 	public Player getCurrentPlayer() {
-		return this.currentPlayer;
+		return currentPlayer;
+		
 	}
 	
-	public void setCurrentPlayer(Player p) {
-		this.currentPlayer = p;
-	}
-
-	public void addRoundPlayer(Player player) {
-		players.add(player);
+	public void setCurrentPlayer(Player player) {
+		currentPlayer = player;
+		
 	}
 	
 	public void setDealerResult(int dealerResult) {
 		this.dealerResult = dealerResult;
+		
 	}
-	
-	/**
-	 * reset client side round variables
-	 */
-	public void resetRound() {
-		dealerResult = 0;
-		players.removeAll(players);
+
+	public boolean makeBet(int bet) {
+		if (currentPlayer.placeBet(bet)) {
+			return controller.makeBet(currentPlayer.getPlayerId(), bet);
+			
+		}
+		return false;
 	}
 	
 }

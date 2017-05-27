@@ -67,10 +67,13 @@ public class PlaceBet extends JPanel {
 				if (betStr.length() > 0) {
 					try {
 						int bet = Integer.parseInt(betStr);
-						if (main.getController().makeBet(main.getCurrentPlayer().getPlayerId(), bet)) {
+//						if (main.getController().makeBet(main.getCurrentPlayer().getPlayerId(), bet)) {
+						if (main.makeBet(bet)) {
 							main.page("round");
+							
 						} else {
 							JOptionPane.showMessageDialog(main, "Could not place bet, user doesn't have enough points");
+							
 						}
 					} catch (Exception exception) {
 						JOptionPane.showMessageDialog(main, "Could not place bet, please enter points in the correct format");
